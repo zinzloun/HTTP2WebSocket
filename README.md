@@ -56,7 +56,7 @@ curl "http://127.0.0.1:3333/command-execution" -d '|id'
 ```
 
 CSRF<br>
-Once logged in open the provided [HTML template](csrf_tmp.html), then check the response
+Once logged in open the provided [HTML template](csrf_tmp.html) on the same DVWS browser session, then check the response in the console:
 ```
 HTTP2WebSocket started listening on port: 3333
 127.0.0.1 - - [17/May/2024 16:25:30] "OPTIONS /change-password HTTP/1.1" 200 -
