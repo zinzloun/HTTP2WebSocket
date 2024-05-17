@@ -55,7 +55,7 @@ Command execution:
 curl "http://127.0.0.1:3333/command-execution" -d '|id'
 ```
 
-CSRF<br>
+CSRF:<br>
 Once logged in open the provided [HTML template](csrf_tmp.html) on the same DVWS browser session, then check the response in the console:
 ```
 HTTP2WebSocket started listening on port: 3333
