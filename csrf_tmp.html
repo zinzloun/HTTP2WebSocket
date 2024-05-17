@@ -19,13 +19,9 @@
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.onreadystatechange = function () {
 	    output = document.getElementById("output");
-	    if (xhr.readyState === 4 && xhr.status === 200) {
-		var json = JSON.parse(xhr.responseText);
+	    if (xhr.readyState === 4) {
 		
-		output.innerHTML = json;
-	    }
-	    else {
-	    	output.innerHTML = "Cannot read the response, probably the error is due to CORS browser implementation. Check the HTTP2WebSocket.py console message";
+	    	output.innerHTML = "Check the RESPONSE in HTTP2WebSocket.py console message";
 	    }
 	};
 	var data = JSON.stringify({"npass": "PWD01", "cpass": "PWD01"});
